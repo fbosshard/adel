@@ -307,15 +307,25 @@ class Adel(object):
         s = Adel.scene(g)
         geom = {sh.id: sh.geometry for sh in s}
         g.remove_property('geometry')
-        fgeom = basename_geom + '.obj'
+        fgeom = basename_geom + '.bgeom'
         fg = basename_adel + '.pckl'
-        s.save(fgeom, 'OBJ')
+        s.save(fgeom, 'BGEOM')
         with open(fg, 'wb') as output:
             pickle.dump(g, output, protocol=2)
         # restore geometry
         g.add_property('geometry')
         g.property('geometry').update(geom)
         return fgeom, fg
+
+    def export_obj(self, g, index=0, dir='./adel_saved', basename=None):
+        if basename is None:
+            if not os.path.exists(dir):
+                os.mkdir(dir)
+            basename_obj = dir + '/scene%04d' % (index)
+        else:
+            basename_obj = str(basename)
+        fobj = basename_obj + '.obj'
+        Adel.scene(g).save(fobj, 'OBJ')
 
     @staticmethod
     def load(index=0, dir='./adel_saved', basename=None, load_geom=True):
