@@ -167,6 +167,16 @@ class AdelWheat(Adel):
 
             g = self.duplicated(gquot, grem)
 
+        plants = canopy['plant']
+        axes = canopy['axe_id']
+        counts = dict()
+        for p, a in set(zip(plants, axes)):
+            if p in counts:
+                counts[p] += 1
+            else:
+                counts[p] = 1
+        self.tiller_count = counts
+
         return g
 
     def checkAxeDyn(self, dates=range(0, 2000, 100), density=None):
