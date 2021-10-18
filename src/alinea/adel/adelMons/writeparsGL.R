@@ -18,8 +18,8 @@ calckinfeu <- function(dev,sen,Nf) {
   ddtipcol<-cbind(dev$TT,cbind(predict(smvis,dev$TT)$y, predict(smlig,dev$TT)$y))
   #ajout des points extreme
   #calcul dernier point
-  dat <- ddtipcol[ddtipcol[,2]>(Nf/2) & ddtipcol[,2]<=(Nf-1),1:2]  #recup point de nbvis nf/2 à nf-1
-  reg <- lsfit(dat[,2],dat[,1])  #moindre carrés y=ax+b
+  dat <- ddtipcol[ddtipcol[,2]>(Nf/2) & ddtipcol[,2]<=(Nf-1),1:2]  #recup point de nbvis nf/2 e nf-1
+  reg <- lsfit(dat[,2],dat[,1])  #moindre carres y=ax+b
   tipNf <- reg$coef[1]+reg$coef[2]*Nf #TT de la derniere feuille Nf selon cette droite
   dat <- ddtipcol[ddtipcol[,3]>(Nf/2) & ddtipcol[,3]<=(Nf-1),c(1,3)] #pareil pour les cols
   reg <- lsfit(dat[,2],dat[,1])
@@ -28,7 +28,7 @@ calckinfeu <- function(dev,sen,Nf) {
   reg <- lsfit(dat[,2],dat[,1])
   col0 <- reg$coef[1]   #donne t0 pour calcul Dil
   #
-  #ajout date moyenne fin de senescence (!extrapolation après la floraison)
+  #ajout date moyenne fin de senescence (!extrapolation apres la floraison)
   smsen<-smooth.spline(sen$TT,sen$nb_sen)
   senEXTRA<- predict(smsen,seq(50,3000,100))
 
@@ -38,7 +38,7 @@ calckinfeu <- function(dev,sen,Nf) {
   #dia : delai initiation - apparition tip
   #dil : duree initiation - ligulation (fin extension)
   colnames(res) <- c("Tini","Die","Dia","Dil","Dsen")
-  res[,"Tini"]=approx(c(1,ddtipcol[,2],Nf),c(0,ddtipcol[,1],tipNf),c(1,(2:Nf)/2),ties="min")$y   #approx renvoie interpolations régulières
+  res[,"Tini"]=approx(c(1,ddtipcol[,2],Nf),c(0,ddtipcol[,1],tipNf),c(1,(2:Nf)/2),ties="min")$y   #approx renvoie interpolations regulieres
   res[,"Die"]=0.8*approx(c(1,ddtipcol[,2],Nf),c(0,ddtipcol[,1],tipNf),1:Nf,ties="min")$y-res[,"Tini"]
   res[,"Dia"]=approx(c(1,ddtipcol[,2],Nf),c(0,ddtipcol[,1],tipNf),1:Nf,ties="min")$y-res[,"Tini"]
   res[,"Dil"]=approx(c(0,ddtipcol[,3],Nf),c(col0,ddtipcol[,1],colNf),1:Nf,ties="min")$y-res[,"Tini"]
@@ -130,7 +130,7 @@ writeprev<- function(fname, alpha, anglesPrev, dev, prec=2) {
   nb_phy_prevMax  <-  anglesPrev$numf[length(anglesPrev$numf)]
   nb_phy_prevMin  <-  anglesPrev$numf[1]
 
-  # valeur du facteur de forme moyen (alpha de la feuille de l'épi)
+  # valeur du facteur de forme moyen (alpha de la feuille de l'epi)
   alpha_moy<-alpha$a*2*nb_phy/3+alpha$b
   cat("#define ALPHA_LARG ",alpha_moy,"\n\n",file=outfile,append=T)
 
@@ -139,7 +139,7 @@ writeprev<- function(fname, alpha, anglesPrev, dev, prec=2) {
   res <- round(mat[,-1],prec)
   Nf <- nb_phy#max(mat[,"numf"])
 
-  nblg <- aggregate(mat[,1],by=list(mat[,1]),length)$x #nbr de feuilles par rang (pour définir dim du tableau)
+  nblg <- aggregate(mat[,1],by=list(mat[,1]),length)$x #nbr de feuilles par rang (pour definir dim du tableau)
   #si manque la/les premiere feuilles -> duplique premier dispo pour combler les manque
   if (nb_phy_prevMin>1) for (i in 1:(nb_phy_prevMin-1)) {nblg <- c(nblg[1],nblg)}
   #si plus de feuilles que nbr median, enleve les derniere
@@ -148,16 +148,16 @@ writeprev<- function(fname, alpha, anglesPrev, dev, prec=2) {
   maxlg <- max(nblg) #nbval pour avoir une matrice complete (a trou !)
 
   cat("#define NBLGMAXGEOM ",maxlg,"\n\n",file=outfile,append=T)
-  cat("#define NBLGGEOM ",paste(nblg,collapse=","),"\n\n",file=outfile,append=T)  #paste,collapse remplace séparateur ' ' pas ','
+  cat("#define NBLGGEOM ",paste(nblg,collapse=","),"\n\n",file=outfile,append=T)  #paste,collapse remplace separateur ' ' pas ','
   cat("#define GEOMVALUES ",file=outfile,append=T)
 
 
   #si feuilles manquantes au debut du profil recupere premier dispo
   if (nb_phy_prevMin>1) for (i in 1:(nb_phy_prevMin-1)) {
     cat("{",file=outfile,append=T)
-    dat <- res[mat[,"numf"]==nb_phy_prevMin,] #récupération de feuille 2 ds la matrice res
+    dat <- res[mat[,"numf"]==nb_phy_prevMin,] #recuperation de feuille 2 ds la matrice res
     cat(paste(t(rbind(dat,matrix(-999,ncol=ncol(dat),nrow=maxlg-nrow(dat)))),collapse=","),file=outfile,append=T)
-    cat("}\\\n",file=outfile,append=T)       #\ de fin supplémentaire pour retour à la ligne ds les macros (spécifique graphtal)
+    cat("}\\\n",file=outfile,append=T)       #\ de fin supplementaire pour retour e la ligne ds les macros (specifique graphtal)
   }
 
   #reste des feuilles
