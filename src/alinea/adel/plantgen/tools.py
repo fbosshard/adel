@@ -300,7 +300,7 @@ def calculate_theoretical_cardinalities(plants_number,
         
     '''
     child_cohort_probabilities_ceiled = dict(zip(decide_child_cohort_probabilities.keys(),
-                                                 np.ceil(decide_child_cohort_probabilities.values())))
+                                                 np.ceil(list(decide_child_cohort_probabilities.values()))))
     all_child_cohorts = set()
     for i in range(plants_number):
         child_cohorts = decide_child_cohorts(child_cohort_probabilities_ceiled, first_child_delay, 0.0)
@@ -308,9 +308,9 @@ def calculate_theoretical_cardinalities(plants_number,
         
     axis_to_cohort_mapping = dict([(cohort_axis[1], cohort_axis[0]) for cohort_axis in all_child_cohorts])
     
-    id_cohort_list = sorted([1] + decide_child_cohort_probabilities.keys())
+    id_cohort_list = sorted([1] + list(decide_child_cohort_probabilities.keys()))
     theoretical_cohort_cardinalities = dict.fromkeys(id_cohort_list, 0.0)
-    id_axis_list = sorted(['MS'] + decide_child_axis_probabilities.keys())
+    id_axis_list = sorted(['MS'] + list(decide_child_axis_probabilities.keys()))
     id_cohort_id_axis_tuples = zip(id_cohort_list, id_axis_list)
     theoretical_axis_cardinalities = dict.fromkeys(id_cohort_id_axis_tuples, 0.0)
     emergence_probability_reduction_coefficient = (1.0 - emergence_probability_reduction_factor)
@@ -359,7 +359,7 @@ def calculate_decide_child_cohort_probabilities(decide_child_axis_probabilities)
         {3: 0.0, 4: 0.900, 5: 0.983, 6: 0.817, 7: 0.117}
         
     '''
-    id_axis_array = np.array(decide_child_axis_probabilities.keys())
+    id_axis_array = np.array(list(decide_child_axis_probabilities.keys()))
     id_cohort_array = np.char.lstrip(id_axis_array, 'T').astype(int) + 3
     decide_child_cohort_probabilities = dict(zip(id_cohort_array, 
                                                  decide_child_axis_probabilities.values()))

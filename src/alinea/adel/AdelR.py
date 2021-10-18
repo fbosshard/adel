@@ -182,8 +182,8 @@ def setAdel(devT,RcodegeoLeaf,RcodegeoAxe,nplants = 1,seed = None, xydb = None, 
         rxydb = r('as.null()')
     elif isinstance(xydb, dict): # pure python xydb dict, a list of list is passed to setAdel
         # Warning : setadel uses index only and finding closest index if db is too small. Unambiguous meaning of keys retrieving from Lindex afterward there fore will need sorting keys before using Lindex (python sorted key index = Lindex - 1 (Lindex follows Rindexing convention), python list index = lseed - 1. cf conversion infra
-        keys = xydb.keys()
-        keys.sort() # to ensure lseed index is sample in the good list)
+        keys = list(xydb.keys())
+        sorted(keys) # to ensure lseed index is sample in the good list)
         rxydb = r.list(*map(str,keys))
         for i in range(len(rxydb)):
             rxydb[i] = r.list(*range(len(xydb[keys[i]])))            

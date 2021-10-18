@@ -412,6 +412,9 @@ def mtg_factory(parameters, metamer_factory=adel_metamer, leaf_sectors=1,
     else:
         dynamic_leaf_db = {k: leaves[k].dynamic for k in leaves}
 
+    if stand:
+        stand = list(stand)
+
     g = MTG()
 
     # buffers

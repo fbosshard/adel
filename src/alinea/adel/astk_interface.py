@@ -99,7 +99,7 @@ class AdelWheat(Adel):
             geoAxe = genGeoAxe(incT=incT, dinT=dinT, dep=dep)
 
         assert len(self.leaves.keys()) == 1
-        k = self.leaves.keys()[0]
+        k = list(self.leaves.keys())[0]
 
         pars = {'devT': self.devT, 'RcodegeoLeaf': self.leaves[k].geoLeaf,
                     'RcodegeoAxe': geoAxe,
