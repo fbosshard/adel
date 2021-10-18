@@ -307,9 +307,9 @@ class Adel(object):
         s = Adel.scene(g)
         geom = {sh.id: sh.geometry for sh in s}
         g.remove_property('geometry')
-        fgeom = basename_geom + '.bgeom'
+        fgeom = basename_geom + '.obj'
         fg = basename_adel + '.pckl'
-        s.save(fgeom, 'BGEOM')
+        s.save(fgeom, 'OBJ')
         with open(fg, 'wb') as output:
             pickle.dump(g, output, protocol=2)
         # restore geometry
