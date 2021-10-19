@@ -145,7 +145,8 @@ class AdelWheat(Adel):
 
     def setup_canopy(self, age=10):
 
-        self.new_stand(age=age)
+        self.canopy_age = age
+        self.meta.update({'canopy_age': self.canopy_age})
 
         if self.duplicate is None:
             canopy = RunAdel(age, self.pars, adelpars=self.run_adel_pars)
