@@ -1,7 +1,7 @@
 from numpy import linspace, cos, sin
 from itertools import *
 from math import pi, sqrt
-from random import random,sample
+from random import random, gauss, sample
 from numpy.random import vonmises
 from alinea.adel.path import path
 import numpy as np
@@ -19,7 +19,7 @@ def regular(nb_plants, nb_rank, dx, dy, nx=None):
     
 def randomise_position(position, radius):
     az = random() * 2 * np.pi
-    r = random() * radius
+    r = gauss(0, radius)
     dx = r * cos(az)
     dy = r * sin(az)
     x,y,z = position
