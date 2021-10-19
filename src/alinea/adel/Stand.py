@@ -44,7 +44,16 @@ class AgronomicStand(object):
                 self.plant_density) if self.plant_density > 0. else 0.
             return plot_length, plot_width
         else:
-            return 0.5, 0.5
+            aspect = float(aspect)
+            nsown = nplants * self.sowing_density / float(
+                self.plant_density)
+            w = sqrt(1. / self.sowing_density * nsown / aspect)
+            l = w * aspect
+            nrow = max(1, round(w / self.inter_row))
+            plant_per_row = max(1, round(l / self.inter_plant))
+            plot_length = self.inter_plant * plant_per_row
+            plot_width = self.inter_row * nrow
+            return plot_length, plot_width
 
     def smart_stand(self, nplants=1, at=None, convunit=100):
         """ return an (almost) square stand that match inter-row, current density and nplants in the stand, 
