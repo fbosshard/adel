@@ -14,7 +14,7 @@ from openalea.plantgl.all import Viewer, Scene
 from openalea.mtg.plantframe.color import colormap
 
 from alinea.adel.geometric_elements import Leaves
-from alinea.adel.Stand import AgronomicStand
+from alinea.adel.Stand import AgronomicStand, FixedSizeStand
 from alinea.adel.mtg_interpreter import plot3d, transform_geom, mtg_interpreter
 from alinea.adel.postprocessing import axis_statistics, plot_statistics, \
     midrib_statistics
@@ -164,14 +164,19 @@ class Adel(object):
         if duplicate is not None:
             self.duplicate = duplicate
 
-        if self.aspect is 'smart':
+
+        if isinstance(self.stand, FixedSizeStand):
             self.nplants, self.domain, self.positions, \
-            self.domain_area = self.stand.smart_stand(
-                self.nplants, at=age, convunit=1. / self.convUnit)
+            self.domain_area = self.stand.stand(self.nplants)
         else:
-            self.nplants, self.domain, self.positions, \
-            self.domain_area = self.stand.stand(
-                self.nplants, aspect=self.aspect, convunit=1. / self.convUnit)
+            if self.aspect is 'smart':
+                self.nplants, self.domain, self.positions, \
+                self.domain_area = self.stand.smart_stand(
+                    self.nplants, at=age, convunit=1. / self.convUnit)
+            else:
+                self.nplants, self.domain, self.positions, \
+                self.domain_area = self.stand.stand(
+                    self.nplants, aspect=self.aspect, convunit=1. / self.convUnit)
 
         self.plant_azimuths = numpy.random.random(self.nplants) * 360
         self.plant_species = balanced_sample(self.nplants, self.species)
