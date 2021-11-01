@@ -317,14 +317,10 @@ class Adel(object):
         g.property('geometry').update(geom)
         return fgeom, fg
 
-    def export_obj(self, g, index=0, dir='./adel_saved', basename=None):
-        if basename is None:
-            if not os.path.exists(dir):
-                os.mkdir(dir)
-            basename_obj = dir + '/scene%04d' % (index)
-        else:
-            basename_obj = str(basename)
-        fobj = basename_obj + '.obj'
+    def export_obj(self, g, basename, dir='./adel_saved'):
+        if not os.path.exists(dir):
+            os.mkdir(dir)
+        fobj = os.path.join(dir, basename + '.obj')
         Adel.scene(g).save(fobj, 'OBJ')
 
     @staticmethod
